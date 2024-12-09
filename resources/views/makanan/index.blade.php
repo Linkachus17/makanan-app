@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-6">
-        <h1 class="text-3xl font-bold mb-6">Makanan List</h1>
+        <h1 class="text-3xl font-bold mb-6">Menu Makanan</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($makanans as $makanan)
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">

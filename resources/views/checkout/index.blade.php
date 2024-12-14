@@ -1,163 +1,46 @@
 <html>
 
 <head>
-    <title>
-        Checkout
-    </title>
+    <title>Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0-alpha.2/dist/tailwind.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <!-- <link rel="stylesheet" href="{{asset('css/checkout.css')}}"> -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffe6f2;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            background-color: #f8f8f8;
-            padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header i {
-            font-size: 24px;
-            margin-right: 10px;
-        }
-
-        .header h1 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        .container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-
-        .food-list {
-            width: 60%;
-        }
-
-        .food-item {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .food-item img {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .food-item .food-name {
-            flex-grow: 1;
-            font-size: 18px;
-        }
-
-        .food-item .quantity-controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .food-item .quantity-controls button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 18px;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-
-        .food-item .quantity-controls button.minus {
-            background-color: #f44336;
-        }
-
-        .summary {
-            width: 35%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .summary h2 {
-            font-size: 18px;
-            margin-top: 0;
-        }
-
-        .summary ul {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-
-        .summary ul li {
-            margin-bottom: 10px;
-        }
-
-        .summary .total {
-            font-size: 24px;
-            margin: 20px 0;
-        }
-
-        .summary .dine-in {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .summary .dine-in input {
-            margin-right: 10px;
-        }
-
-        .summary button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 
-<body>
-    <div class="header">
-        <a href="/makanan" style="text-decoration: none; color: black;">
-            <i class="fas fa-arrow-left"></i>
+<body class="font-sans">
+    <div class="flex items-center bg-gray-100 p-4 shadow-md">
+        <a href="/" class="text-black no-underline">
+            <i class="fas fa-arrow-left text-xl mr-2"></i>
         </a>
-        <h1>Checkout</h1>
+        <h1 class="text-xl font-semibold">Checkout</h1>
     </div>
-    <div class="container">
-        <div class="food-list" id="food-list"></div>
-        <div class="summary">
-            <h2>Summary</h2>
-            <ul id="summary-list"></ul>
-            <div class="total" id="total-price">Rp. 0</div>
-            <div class="dine-in">
-                <input id="dine-in" type="checkbox" />
+    <div class="flex justify-between p-8">
+        <!-- Food List Section -->
+        <div class="w-2/3">
+            <div id="food-list"></div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="w-1/3 bg-white p-6 rounded-lg shadow-md ml-5">
+            <h2 class="text-lg font-semibold">Summary</h2>
+            <ul id="summary-list" class="list-disc pl-5 mt-4"></ul>
+            <div class="text-xl font-semibold mt-6" id="total-price">Rp. 0</div>
+            <div class="flex items-center mt-4">
+                <input id="dine-in" type="checkbox" class="mr-2" />
                 <label for="dine-in">Dine-in?</label>
             </div>
-            <button id="order-button">ORDER</button>
+            <button id="order-button" class="bg-green-500 text-white w-full py-3 rounded mt-6 text-lg">
+                ORDER
+            </button>
         </div>
     </div>
 
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Function to format numbers as currency
+        function formatCurrency(amount) {
+            return `Rp. ${amount.toLocaleString()}`;
+        }
 
         function updateCheckout() {
             const foodList = document.getElementById('food-list');
@@ -169,26 +52,27 @@
 
             cart.forEach((item, index) => {
                 const foodItem = document.createElement('div');
-                foodItem.className = 'food-item';
+                foodItem.className = 'flex items-center bg-white p-4 mb-4 rounded-lg shadow-md';
                 foodItem.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" height="80" width="80" />
-                    <div class="food-name">${item.name}</div>
-                    <div class="quantity-controls">
-                        <button class="plus" onclick="changeQuantity(${index}, 1)">+</button>
-                        <span>${item.quantity}</span>
-                        <button class="minus" onclick="changeQuantity(${index}, -1)">-</button>
+                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 rounded-lg mr-4" />
+                    <div class="flex-grow text-lg">${item.name}</div>
+                    <div class="flex items-center">
+                        <button class="border-2 border-green-500 text-black rounded-full w-8 h-8 text-lg mx-2" onclick="changeQuantity(${index}, 1)">+</button>
+                        <span class="text-lg">${item.quantity}</span>
+                        <button class="border-2 border-red-500 text-black rounded-full w-8 h-8 text-lg mx-2" onclick="changeQuantity(${index}, -1)">-</button>
                     </div>
                 `;
                 foodList.appendChild(foodItem);
 
                 const summaryItem = document.createElement('li');
-                summaryItem.innerText = `${item.name} (qty: ${item.quantity}) - Rp. ${item.price * item.quantity}`;
+                summaryItem.className = 'mb-2';
+                summaryItem.innerText = `${item.name} (qty: ${item.quantity}) - ${formatCurrency(item.price * item.quantity)}`;
                 summaryList.appendChild(summaryItem);
 
                 total += item.price * item.quantity;
             });
 
-            totalPrice.innerText = `Rp. ${total}`;
+            totalPrice.innerText = formatCurrency(total);
         }
 
         function changeQuantity(index, change) {

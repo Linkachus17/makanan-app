@@ -17,17 +17,17 @@ class DatabaseSeeder extends Seeder
         Makanan::create([
             'name' => 'Pancake',
             'price' => 10000,
-            'image' => '1.jpg'
+            'image' => 'http://localhost:8000/storage/img/pancake.jpg'
         ]);
         Makanan::create([
             'name' => 'Mixed Fruit',
             'price' => 15000,
-            'image' => '2.jpg'
+            'image' => 'http://localhost:8000/storage/img/mixed_fruits.jpg'
         ]);
         Makanan::create([
             'name' => 'Noodle',
             'price' => 20000,
-            'image' => '3.jpg'
+            'image' => 'http://localhost:8000/storage/img/noodles.jpg'
         ]);
 
         // User::factory(10)->create();

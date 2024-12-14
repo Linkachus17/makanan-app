@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #ffffff, #ffccff);
+}
+
+.header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.food-item {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    margin: 10px;
+    text-align: center;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.food-item img {
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.food-item .name {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.food-item .add-button {
+    background-color: #00cc00;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 0 0 10px 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.food-item .add-button.added {
+    background-color: #00cc00;
+}
+
+.checkout {
+    background-color: #3399ff;
+    color: black;
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

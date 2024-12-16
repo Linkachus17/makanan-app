@@ -7,26 +7,39 @@
 </head>
 
 <body class="font-sans">
+    <!-- Header -->
     <div class="flex items-center bg-gray-100 p-4 shadow-md">
         <a href="/" class="text-black no-underline">
             <i class="fas fa-arrow-left text-xl mr-2"></i>
         </a>
         <h1 class="text-xl font-semibold">Checkout</h1>
     </div>
-    <div class="flex justify-between p-8">
+
+    <!-- Main Content -->
+    <div class="flex flex-col lg:flex-row justify-between p-4 lg:p-8">
         <!-- Food List Section -->
-        <div class="w-2/3">
+        <div class="w-full lg:w-2/3">
             <div id="food-list"></div>
         </div>
 
         <!-- Summary Section -->
-        <div class="w-1/3 bg-white p-6 rounded-lg shadow-md ml-5">
+        <div class="w-full lg:w-1/3 bg-white p-6 rounded-lg shadow-md mt-4 lg:mt-0 lg:ml-5">
             <h2 class="text-lg font-semibold">Summary</h2>
             <ul id="summary-list" class="list-disc pl-5 mt-4"></ul>
             <div class="text-xl font-semibold mt-6" id="total-price">Rp. 0</div>
             <div class="flex items-center mt-4">
                 <input id="dine-in" type="checkbox" class="mr-2" />
                 <label for="dine-in">Dine-in?</label>
+            </div>
+            <!-- Table Number Input (Hidden by Default) -->
+            <div id="table-number-container" class="mt-4 hidden">
+                <label for="table-number" class="block mb-2">Table Number:</label>
+                <input
+                    id="table-number"
+                    type="number"
+                    class="border-2 border-gray-300 rounded w-full py-2 px-4"
+                    placeholder="Enter Table Number"
+                />
             </div>
             <button id="order-button" class="bg-green-500 text-white w-full py-3 rounded mt-6 text-lg">
                 ORDER
@@ -83,6 +96,16 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCheckout();
         }
+
+        // Handle Dine-in Checkbox Toggle
+        document.getElementById('dine-in').addEventListener('change', function (event) {
+            const tableNumberContainer = document.getElementById('table-number-container');
+            if (event.target.checked) {
+                tableNumberContainer.classList.remove('hidden');
+            } else {
+                tableNumberContainer.classList.add('hidden');
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', updateCheckout);
     </script>

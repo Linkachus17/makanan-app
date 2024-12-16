@@ -8,3 +8,7 @@
 - Minor controller fixes
 - Initial push
 - Design changes in Order page and Checkout page
+
+## December 16th
+- Slight changes to designs
+- Added table number input box

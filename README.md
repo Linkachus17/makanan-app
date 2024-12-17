@@ -12,3 +12,7 @@
 ## December 16th
 - Slight changes to designs
 - Added table number input box
+
+
+## Tasks
+- Create mobile view

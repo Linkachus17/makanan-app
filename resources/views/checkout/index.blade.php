@@ -2,6 +2,7 @@
 
 <head>
     <title>Checkout</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0-alpha.2/dist/tailwind.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
 </head>
@@ -25,21 +26,33 @@
         <!-- Summary Section -->
         <div class="w-full lg:w-1/3 bg-white p-6 rounded-lg shadow-md mt-4 lg:mt-0 lg:ml-5">
             <h2 class="text-lg font-semibold">Summary</h2>
-            <ul id="summary-list" class="list-disc pl-5 mt-4"></ul>
+            <table class="min-w-full mt-4">
+                <thead>
+                    <tr>
+                        <th class="border-b-2 border-gray-300 text-left p-2">Item</th>
+                        <th class="border-b-2 border-gray-300 text-left p-2">Quantity</th>
+                        <th class="border-b-2 border-gray-300 text-left p-2">Price</th>
+                    </tr>
+                </thead>
+                <tbody id="summary-list"></tbody>
+            </table>
             <div class="text-xl font-semibold mt-6" id="total-price">Rp. 0</div>
             <div class="flex items-center mt-4">
                 <input id="dine-in" type="checkbox" class="mr-2" />
                 <label for="dine-in">Dine-in?</label>
             </div>
-            <!-- Table Number Input (Hidden by Default) -->
+            <!-- Table Number Input (Dropdown) -->
             <div id="table-number-container" class="mt-4 hidden">
                 <label for="table-number" class="block mb-2">Table Number:</label>
-                <input
-                    id="table-number"
-                    type="number"
-                    class="border-2 border-gray-300 rounded w-full py-2 px-4"
-                    placeholder="Enter Table Number"
-                />
+                <select id="table-number" class="border-2 border-gray-300 rounded w-full py-2 px-4">
+                    <option value="">Select Table Number</option>
+                    <!-- Generate options from 1 to 20 -->
+                    <script>
+                        for (let i = 1; i <= 20; i++) {
+                            document.write(`<option value="${i}">${i}</option>`);
+                        }
+                    </script>
+                </select>
             </div>
             <button id="order-button" class="bg-green-500 text-white w-full py-3 rounded mt-6 text-lg">
                 ORDER
@@ -77,9 +90,12 @@
                 `;
                 foodList.appendChild(foodItem);
 
-                const summaryItem = document.createElement('li');
-                summaryItem.className = 'mb-2';
-                summaryItem.innerText = `${item.name} (qty: ${item.quantity}) - ${formatCurrency(item.price * item.quantity)}`;
+                const summaryItem = document.createElement('tr');
+                summaryItem.innerHTML = `
+                    <td class="border-b border-gray-300 p-2">${item.name}</td>
+                    <td class="border-b border-gray-300 p-2">${item.quantity}</td>
+                    <td class="border-b border-gray-300 p-2">${formatCurrency(item.price * item.quantity)}</td>
+                `;
                 summaryList.appendChild(summaryItem);
 
                 total += item.price * item.quantity;
@@ -98,13 +114,65 @@
         }
 
         // Handle Dine-in Checkbox Toggle
-        document.getElementById('dine-in').addEventListener('change', function (event) {
+        document.getElementById('dine-in').addEventListener('change', function(event) {
             const tableNumberContainer = document.getElementById('table-number-container');
             if (event.target.checked) {
                 tableNumberContainer.classList.remove('hidden');
             } else {
                 tableNumberContainer.classList.add('hidden');
             }
+        });
+
+        document.getElementById('order-button').addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+
+            const dineIn = document.getElementById('dine-in').checked;
+            const tableNumber = dineIn ? document.getElementById('table-number').value : null;
+
+            // Tambahkan pemeriksaan untuk memastikan nomor meja dipilih jika dine-in dicentang
+            if (dineIn && !tableNumber) {
+                alert('Please select a table number before ordering.');
+                return;
+            }
+
+            // Buat array untuk menyimpan semua promise dari fetch
+            const orderPromises = cart.map(item => {
+                const orderData = {
+                    name: item.name,
+                    price: item.price,
+                    qty: item.quantity,
+                    dine_in: dineIn,
+                    table_number: tableNumber
+                };
+
+                return fetch('/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Pastikan CSRF token ditambahkan
+                    },
+                    body: JSON.stringify(orderData)
+                });
+            });
+
+            // Tunggu semua permintaan selesai
+            Promise.all(orderPromises)
+                .then(responses => {
+                    // Periksa apakah semua permintaan berhasil
+                    return Promise.all(responses.map(response => response.json()));
+                })
+                .then(dataArray => {
+                    // Jika semua order berhasil, arahkan ke halaman view order
+                    localStorage.removeItem('cart'); // Hapus cart setelah berhasil
+                    updateCheckout();
+                    window.location.href = '/checkout-success'; // Ganti dengan URL halaman view order Anda
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
 
         document.addEventListener('DOMContentLoaded', updateCheckout);

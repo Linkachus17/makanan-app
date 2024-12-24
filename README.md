@@ -13,6 +13,5 @@
 - Slight changes to designs
 - Added table number input box
 
-
-## Tasks
-- Create mobile view
+## December 24th
+- Manual Merge from [raihan](https://github.com/Linkachus17/makanan-app/tree/raihan)

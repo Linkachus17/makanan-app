@@ -18,10 +18,11 @@ Route::get('/checkout-success', function () {
 });
 Route::post('/order', [CheckoutController::class, 'store']);
 
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/operator', [OrderController::class, 'index']);
     Route::get('/operator-riwayat', function () {
         return view('operator.riwayat');

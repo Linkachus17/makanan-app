@@ -8,3 +8,7 @@ isikan progress disini
 
 [v2.0.0]
 - Login (Operator)
+
+[v2.1.0]
+- View Makanan (Operator)
+- View Add Makanan (Operator)

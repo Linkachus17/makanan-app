@@ -1,8 +1,8 @@
 <div class="w-full max-w-7xl bg-white rounded-lg shadow-md flex justify-between items-center p-4 mb-6">
     <div class="flex-1 flex justify-center space-x-40">
-        <a href="/operator-riwayat" class="text-gray-500 {{ Request::is('operator-riwayat') ? 'text-green-700 border-b-2 border-blue-500 pb-1' : '' }}">Riwayat Orderan</a>
+        <a href="/operator/riwayat" class="text-gray-500 {{ Request::is('operator/riwayat') ? 'text-green-700 border-b-2 border-blue-500 pb-1' : '' }}">Riwayat Orderan</a>
         <a href="/operator" class="text-gray-500 {{ Request::is('operator') ? 'text-green-700 border-b-2 border-blue-500 pb-1' : '' }}">Orderan</a>
-        <a href="/operator-makanan" class="text-gray-500 {{ Request::is('operator-makanan') ? 'text-green-700 border-b-2 border-blue-500 pb-1' : '' }}">List Makanan</a>
+        <a href="/operator/makanan" class="text-gray-500 {{ Request::is('operator/makanan') ? 'text-green-700 border-b-2 border-blue-500 pb-1' : '' }}">List Makanan</a>
     </div>
     <div class="relative">
         <div class="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" id="dropdownButton">A</div>

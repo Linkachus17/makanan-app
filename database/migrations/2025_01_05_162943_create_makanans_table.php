@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('makanans', function (Blueprint $table) {
             $table->id();
-            // $table->string('');
             $table->string('name');
             $table->decimal('price', 10, 2);
             $table->string('image');
+            $table->boolean('availability')->default(false);
             $table->timestamps();
         });
     }

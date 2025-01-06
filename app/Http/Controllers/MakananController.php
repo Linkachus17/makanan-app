@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Makanan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MakananController extends Controller
 {
@@ -15,47 +16,80 @@ class MakananController extends Controller
 
     public function operator_makanan()
     {
-        $makanans = Makanan::all();
+        $makanans = Makanan::simplePaginate(6);
         return view('operator.makanan.index', compact('makanans'));
-    }
-
-    public function create()
-    {
-        return view('makanan.create');
     }
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'image' => 'required|url',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        Makanan::create($request->all());
-        return redirect()->route('makanan.index');
-    }
+        // Upload image
+        $imagePath = $request->file('image')->store('images', 'public');
 
-    public function edit(Makanan $makanan)
-    {
-        return view('makanan.edit', compact('makanan'));
-    }
-
-    public function update(Request $request, Makanan $makanan)
-    {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'image' => 'required|url',
+        // Create new Makanan
+        Makanan::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'image' => $imagePath,
+            'availability' => $request->has('availability') // Menyimpan status checkbox
         ]);
 
-        $makanan->update($request->all());
-        return redirect()->route('makanan.index');
+        return redirect()->back()->with('success', 'Makanan berhasil ditambahkan!');
     }
 
-    public function destroy(Makanan $makanan)
+    public function update(Request $request)
     {
+        $request->validate([
+            'id' => 'required|exists:makanans,id',
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'availability' => 'nullable|boolean',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        $makanan = Makanan::find($request->id);
+        $makanan->name = $request->name;
+        $makanan->price = $request->price;
+        $makanan->availability = $request->has('availability') ? 1 : 0; // Konversi checkbox menjadi boolean
+
+        // Jika ada gambar yang diupload, ganti gambar lama
+        if ($request->hasFile('image')) {
+            if ($makanan->image) {
+                Storage::disk('public')->delete($makanan->image); // Hapus gambar lama
+            }
+            $makanan->image = $request->file('image')->store('images', 'public');
+        }
+
+        $makanan->save();
+
+        return redirect()->back()->with('success', 'Makanan updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        // Cari makanan berdasarkan ID
+        $makanan = Makanan::find($id);
+
+        // Jika makanan tidak ditemukan, kembalikan respons error
+        if (!$makanan) {
+            return response()->json(['message' => 'Food item not found.'], 404);
+        }
+
+        // Hapus file gambar jika ada
+        if ($makanan->image && Storage::disk('public')->exists($makanan->image)) {
+            Storage::disk('public')->delete($makanan->image);
+        }
+
+        // Hapus data makanan dari database
         $makanan->delete();
-        return redirect()->route('makanan.index');
+
+        // Kembalikan respons sukses
+        return response()->json(['message' => 'Food item deleted successfully.'], 200);
     }
 }

@@ -18,3 +18,7 @@ Progress :
 - Update Makanan (Operator)
 - Delete Makanan (Operator)
 - View Makanan (User) && View Checkout Image (Error)
+
+[v2.2.1]
+- View Makanan Berdasarkan Tersedia (User)
+- View Checkout Image (Success)

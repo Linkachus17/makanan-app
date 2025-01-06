@@ -80,7 +80,7 @@
                 const foodItem = document.createElement('div');
                 foodItem.className = 'flex items-center bg-white p-4 mb-4 rounded-lg shadow-md';
                 foodItem.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 rounded-lg mr-4" onerror="this.onerror=null; this.src='/images/image-not-found.png';" />
+            <img src="${item.image || '/images/image-not-found.png'}" alt="${item.name}" class="w-20 h-20 rounded-lg mr-4" onerror="this.onerror=null; this.src='/images/image-not-found.png';" />
             <div class="flex-grow text-lg">${item.name}</div>
             <div class="flex items-center">
                 <button class="border-2 border-green-500 text-black rounded-full w-8 h-8 text-lg mx-2" onclick="changeQuantity(${index}, 1)">+</button>

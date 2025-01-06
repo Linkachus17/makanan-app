@@ -10,7 +10,7 @@ class MakananController extends Controller
 {
     public function index()
     {
-        $makanans = Makanan::all();
+        $makanans = Makanan::where('availability', true)->get();
         return view('makanan.index', compact('makanans'));
     }
 

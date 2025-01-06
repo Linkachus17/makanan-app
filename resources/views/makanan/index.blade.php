@@ -60,6 +60,7 @@
                 existingItem.quantity++;
             } else {
                 foodItem.quantity = 1;
+                foodItem.image = `{{ asset('storage') }}/${foodItem.image}`; // Menambahkan jalur gambar yang benar
                 cart.push(foodItem);
             }
             checkoutCount++;

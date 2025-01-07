@@ -15,7 +15,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 place-items-center">
             @foreach($makanans as $food)
             <div class="bg-gray-100 rounded-lg shadow-lg overflow-hidden w-96">
-                <img src="{{ asset($food->image) }}" alt="{{ $food->name }}" class="w-full h-48 object-cover">
+                @php
+                $imagePath = public_path('storage/' . $food->image);
+                $defaultImage = asset('images/image-not-found.png'); // Ganti dengan path gambar default Anda
+                @endphp
+                <img src="{{ file_exists($imagePath) ? asset('storage/' . $food->image) : $defaultImage }}" alt="{{ $food->name }}" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-lg font-bold mb-2">Rp{{ number_format($food->price, 0, ',', '.') }}</h3>
                     <h2 class="text-lg font-bold mb-2">{{ $food->name }}</h2>
@@ -56,6 +60,7 @@
                 existingItem.quantity++;
             } else {
                 foodItem.quantity = 1;
+                foodItem.image = `{{ asset('storage') }}/${foodItem.image}`; // Menambahkan jalur gambar yang benar
                 cart.push(foodItem);
             }
             checkoutCount++;

@@ -1,17 +1,24 @@
-# Changelogs
-## November 25th
-- Initial creation
-- Created webpage
+## Changelogs
+Progress :
 
-## December 14th
-- Manual Merge from [raihan](https://github.com/Linkachus17/makanan-app/tree/raihan)
-- Minor controller fixes
-- Initial push
-- Design changes in Order page and Checkout page
+[v1.0.0]
+- Makanan (User)
+- Checkout (User)
+- Order Success (User)
 
-## December 16th
-- Slight changes to designs
-- Added table number input box
+[v2.0.0]
+- Login (Operator)
 
-## December 24th
-- Manual Merge from [raihan](https://github.com/Linkachus17/makanan-app/tree/raihan)
+[v2.1.0]
+- View Makanan (Operator)
+- View Add Makanan (Operator)
+
+[v2.2.0]
+- Add Makanan (Operator)
+- Update Makanan (Operator)
+- Delete Makanan (Operator)
+- View Makanan (User) && View Checkout Image (Error)
+
+[v2.2.1]
+- View Makanan Berdasarkan Tersedia (User)
+- View Checkout Image (Success)

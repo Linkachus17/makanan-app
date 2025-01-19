@@ -16,12 +16,6 @@
     </div>
 </div>
 
-@if(session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif
-
 <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-6">
     @foreach($makanans as $makanan)
     <div class="bg-white rounded-lg shadow-md p-4 food-item" data-id="{{ $makanan->id }}" data-name="{{ $makanan->name }}" data-price="{{ $makanan->price }}" data-image="{{ asset('storage/' . $makanan->image) }}" data-availability="{{ $makanan->availability }}">
@@ -30,16 +24,21 @@
         $defaultImage = asset('images/image-not-found.png'); // Ganti dengan path gambar default Anda
         @endphp
         <img src="{{ file_exists($imagePath) ? asset('storage/' . $makanan->image) : $defaultImage }}" alt="{{ $makanan->name }}" class="w-full h-48 object-fill" />
-        <div class="py-4">
-            <div class="text-lg font-bold mb-2">
-                {{ $makanan->name }}
+        <div class="py-4 flex justify-between items-center">
+            <div>
+                <div class="text-lg font-bold mb-2">
+                    {{ $makanan->name }}
+                </div>
+                <p class="text-lg font-bold">
+                    Rp{{ number_format($makanan->price, 0, ',', '.') }}
+                </p>
             </div>
-            <p class="text-lg font-bold">
-                Rp{{ number_format($makanan->price, 0, ',', '.') }}
-            </p>
-            <p class="text-sm">
-                Status: {{ $makanan->availability ? 'Tersedia' : 'Tidak Tersedia' }}
-            </p>
+            <div class="text-sm font-bold text-right">
+                <p>Status :</p>
+                <p class="{{ $makanan->availability ? 'text-green-500' : 'text-yellow-500' }}">
+                    {{ $makanan->availability ? 'Tersedia' : 'Tidak Tersedia' }}
+                </p>
+            </div>
         </div>
     </div>
     @endforeach

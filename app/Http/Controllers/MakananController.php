@@ -10,7 +10,7 @@ class MakananController extends Controller
 {
     public function index()
     {
-        $makanans = Makanan::where('availability', true)->get();
+        $makanans = Makanan::where('availability', true)->simplePaginate(6);
         return view('makanan.index', compact('makanans'));
     }
 

@@ -22,3 +22,7 @@ Progress :
 [v2.2.1]
 - View Makanan Berdasarkan Tersedia (User)
 - View Checkout Image (Success)
+
+[v2.3.0]
+- Order (Operator)
+- Riwayat Order (Operator)

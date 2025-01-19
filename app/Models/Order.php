@@ -9,4 +9,7 @@ class Order extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    // protected $casts = [
+    //     'items' => 'array', // Mengonversi JSON ke array
+    // ];
 }

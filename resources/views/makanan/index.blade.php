@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col" style="background: linear-gradient(to bottom, #ffffff, #ffccff);">
     <div class="bg-gray-100 py-4 text-center text-2xl font-bold">List Makanan</div>
 
     <div class="container mx-auto p-6">
@@ -30,6 +30,11 @@
             </div>
             @endforeach
         </div>
+    </div>
+
+    <!-- Pagination Links -->
+    <div class="flex justify-center mt-6">
+        {{ $makanans->links() }}
     </div>
 
     <div id="checkout-container" class="fixed bottom-0 w-full bg-blue-400 text-center py-4 hidden" style="padding-top: 10px;">

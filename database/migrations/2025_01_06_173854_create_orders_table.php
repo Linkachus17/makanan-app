@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->decimal('price', 10, 2);
-            $table->integer('qty');
+            // $table->string('name');
+            // $table->decimal('price', 10, 2);
+            // $table->integer('qty');
+            $table->json('items');
             $table->boolean('dine_in');
             $table->integer('table_number')->nullable();
+            $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
             $table->timestamps();
         });
     }

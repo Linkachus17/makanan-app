@@ -26,11 +26,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Operator Page
 Route::middleware(['auth'])->group(function () {
     Route::get('/operator', [OrderController::class, 'index']);
-    Route::get('/operator/riwayat', function () {
-        return view('operator.riwayat.index');
-    });
+    Route::get('/operator/riwayat', [OrderController::class, 'riwayat']);
     Route::get('/operator/makanan', [MakananController::class, 'operator_makanan']);
     Route::post('/operator/makanan', [MakananController::class, 'store']);
     Route::post('/operator/makanan/update', [MakananController::class, 'update'])->name('makanan.update');
     Route::delete('/operator/makanan/{id}', [MakananController::class, 'destroy'])->name('makanan.destroy');
+    Route::post('/operator/order/update/{id}', [OrderController::class, 'updateStatus']);
 });

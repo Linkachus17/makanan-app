@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body class="font-sans">
+<body class="font-sans min-h-screen" style="background: linear-gradient(to bottom, #ffffff, #ffccff);">
     <!-- Header -->
     <div class="flex items-center bg-gray-100 p-4 shadow-md">
         <a href="/" class="text-black no-underline">
@@ -138,37 +138,32 @@
                 return;
             }
 
-            // Buat array untuk menyimpan semua promise dari fetch
-            const orderPromises = cart.map(item => {
-                const orderData = {
+            // Buat objek untuk menyimpan semua item
+            const orderData = {
+                items: cart.map(item => ({
                     name: item.name,
                     price: item.price,
-                    qty: item.quantity,
-                    dine_in: dineIn,
-                    table_number: tableNumber
-                };
+                    qty: item.quantity
+                })),
+                dine_in: dineIn,
+                table_number: tableNumber
+            };
 
-                return fetch('/order', {
+            fetch('/order', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}' // Pastikan CSRF token ditambahkan
                     },
                     body: JSON.stringify(orderData)
-                });
-            });
-
-            // Tunggu semua permintaan selesai
-            Promise.all(orderPromises)
-                .then(responses => {
-                    // Periksa apakah semua permintaan berhasil
-                    return Promise.all(responses.map(response => response.json()));
                 })
-                .then(dataArray => {
-                    // Jika semua order berhasil, arahkan ke halaman view order
-                    localStorage.removeItem('cart'); // Hapus cart setelah berhasil
-                    updateCheckout();
-                    window.location.href = '/checkout-success'; // Ganti dengan URL halaman view order Anda
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        localStorage.removeItem('cart'); // Hapus cart setelah berhasil
+                        updateCheckout();
+                        window.location.href = '/checkout-success'; // Ganti dengan URL halaman view order Anda
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
